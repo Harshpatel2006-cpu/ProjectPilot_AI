@@ -1,14 +1,26 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import path from 'path';
+import fs from 'fs';
+import { fileURLToPath } from 'url';
 
 dotenv.config();
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 const PORT = process.env.PORT || 3001;
 
 app.use(cors({ origin: '*' }));
 app.use(express.json({ limit: '2mb' }));
+
+// Serve frontend build if present
+const distPath = path.join(__dirname, '../dist');
+if (fs.existsSync(distPath)) {
+  app.use(express.static(distPath));
+}
 
 // ─── Utility: call Google Gemini ─────────────────────────────────────────────
 async function callGemini(prompt, apiKey) {
@@ -322,6 +334,14 @@ Return JSON ONLY with the upgraded version:
     return res.status(500).json({ success: false, error: err.message });
   }
 });
+
+// SPA fallback: any non-API route serves index.html
+if (fs.existsSync(distPath)) {
+  app.get('*', (req, res, next) => {
+    if (req.path.startsWith('/api/')) return next();
+    res.sendFile(path.join(distPath, 'index.html'));
+  });
+}
 
 // ─── Start Server ─────────────────────────────────────────────────────────────
 app.listen(PORT, () => {
