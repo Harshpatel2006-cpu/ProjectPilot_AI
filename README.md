@@ -3,7 +3,7 @@
 > **"Don't just generate a project. Find the project you can actually build."**
 
 ProjectPilot AI is an AI-powered academic project architect and engineering mentor designed for final-year college and engineering students. It evaluates student skills, team size, timeline, and hardware constraints (RAM, GPU) to generate feasible, high-impact project candidates and guide students all the way through project defense.
-
+live link- https://projectpilot-ai-md2z.onrender.com/
 ---
 
 ## 🌟 Key Features
