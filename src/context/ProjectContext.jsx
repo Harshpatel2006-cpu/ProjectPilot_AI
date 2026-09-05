@@ -60,9 +60,10 @@ export function ProjectProvider({ children }) {
   });
 
   const [settings, setSettings] = useState(() => {
+    const defaultApiKey = import.meta.env.VITE_GEMINI_API_KEY || import.meta.env.VITE_AI_API_KEY || '';
     return storageService.get(storageService.keys.SETTINGS, {
-      apiKey: import.meta.env.VITE_AI_API_KEY || '',
-      model: 'gpt-4o-mini',
+      apiKey: defaultApiKey,
+      model: defaultApiKey ? 'gemini-1.5-flash' : 'gpt-4o-mini',
       demoMode: true,
       soundEffects: true
     });

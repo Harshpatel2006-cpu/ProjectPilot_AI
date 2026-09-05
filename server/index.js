@@ -337,7 +337,7 @@ Return JSON ONLY with the upgraded version:
 
 // SPA fallback: any non-API route serves index.html
 if (fs.existsSync(distPath)) {
-  app.get('*', (req, res, next) => {
+  app.use((req, res, next) => {
     if (req.path.startsWith('/api/')) return next();
     res.sendFile(path.join(distPath, 'index.html'));
   });
